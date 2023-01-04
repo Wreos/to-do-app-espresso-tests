@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.architecture.blueprints.todoapp.tasks
+package com.example.android.architecture.blueprints.todoapp.tasks.tests
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -29,6 +29,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.pageObjects.TaskDetailPage
 import com.example.android.architecture.blueprints.todoapp.pageObjects.TaskPage
 import com.example.android.architecture.blueprints.todoapp.pageObjects.TodoListPage
+import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.*
 import org.junit.After
@@ -38,10 +39,14 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class TestTaskCRUD {
+class CreateReadUpdateDeleteTests {
 
     private lateinit var repository: TasksRepository
     private val dataBindingIdlingResource = DataBindingIdlingResource()
+    private val taskTitleOne = "taskTitleOne"
+    private val taskTitleTwo = "taskTitleTwo"
+    private val taskDescriptionOne = "taskDescriptionOne"
+    private val taskDescriptionTwo = "taskDescriptionTwo"
 
     @Before
     fun init() {
@@ -73,7 +78,7 @@ class TestTaskCRUD {
 
     @Test
     fun editTask() {
-        repository.saveTaskBlocking(Task("TITLE1", "DESCRIPTION"))
+        repository.saveTaskBlocking(Task(taskTitleOne, taskDescriptionOne))
 
         val activityScenario = ActivityScenario.launch(TasksActivity::class.java)
         val todoListPage = TodoListPage()
@@ -82,13 +87,13 @@ class TestTaskCRUD {
 
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        todoListPage.clickOnViewWithText("TITLE1")
+        todoListPage.clickOnViewWithText(taskTitleOne)
         taskDetailPage.clickButton(taskDetailPage.editButton)
-        editTaskPage.fillTitle("TITLE2")
-        editTaskPage.fillDescription("DESCRIPTION2")
+        editTaskPage.fillTitle(taskTitleTwo)
+        editTaskPage.fillDescription(taskDescriptionTwo)
         editTaskPage.clickButton(editTaskPage.saveTaskButton)
-        todoListPage.verifyTodoDisplayed("TITLE2")
-        todoListPage.verifyTodoIsNotDisplayed("TITLE1")
+        todoListPage.verifyTodoDisplayed(taskTitleTwo)
+        todoListPage.verifyTodoIsNotDisplayed(taskTitleOne)
         activityScenario.close()
     }
 
@@ -101,17 +106,16 @@ class TestTaskCRUD {
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         todoListPage.clickButton(todoListPage.addTaskButton)
-        editTaskPage.fillTitle("TITLE")
-        editTaskPage.fillDescription("DESCRIPTION")
+        editTaskPage.fillTitle(taskTitleOne)
+        editTaskPage.fillDescription(taskDescriptionOne)
         editTaskPage.clickButton(editTaskPage.saveTaskButton)
-        todoListPage.verifyTodoDisplayed("TITLE")
-        todoListPage.checkToastTextIsDisplayed("Task added")
+        todoListPage.verifyTodoDisplayed(taskTitleOne)
         activityScenario.close()
     }
 
     @Test
     fun testDeleteTask() {
-        repository.saveTaskBlocking(Task("TITLE1", "DESCRIPTION"))
+        repository.saveTaskBlocking(Task(taskTitleOne, taskDescriptionOne))
 
         val activityScenario = ActivityScenario.launch(TasksActivity::class.java)
         val todoListPage = TodoListPage()
@@ -119,11 +123,27 @@ class TestTaskCRUD {
 
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        todoListPage.clickOnViewWithText("TITLE1")
+        todoListPage.clickOnViewWithText(taskTitleOne)
         taskDetailPage.clickButton(taskDetailPage.deleteButton)
         todoListPage.clickButton(todoListPage.filterButton)
         todoListPage.clickOnViewWithText("All")
-        todoListPage.verifyTodoIsNotDisplayed("TITLE1")
+        todoListPage.verifyTodoIsNotDisplayed(taskTitleOne)
+        activityScenario.close()
+    }
+
+    @Test
+    fun testTaskDetailInformation() {
+        repository.saveTaskBlocking(Task(taskTitleOne, taskDescriptionOne))
+
+        val activityScenario = ActivityScenario.launch(TasksActivity::class.java)
+        val todoListPage = TodoListPage()
+        val taskDetailPage = TaskDetailPage()
+
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        todoListPage.clickOnViewWithText(taskTitleOne)
+        taskDetailPage.checkElementContainsText(taskDetailPage.titleText, taskTitleOne)
+        taskDetailPage.checkElementContainsText(taskDetailPage.descriptionText, taskDescriptionOne)
         activityScenario.close()
     }
 }

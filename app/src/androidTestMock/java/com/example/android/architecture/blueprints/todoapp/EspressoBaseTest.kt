@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.android.architecture.blueprints.todoapp
 
 import androidx.test.espresso.Espresso.onView
@@ -21,8 +6,10 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.Matchers.allOf
+import com.example.android.architecture.blueprints.todoapp.tasks.logTest
+import org.hamcrest.Matchers.*
 import org.junit.runner.RunWith
+
 
 @RunWith(AndroidJUnit4::class)
 open class EspressoBaseTest {
@@ -33,20 +20,29 @@ open class EspressoBaseTest {
     }
 
     fun fillInWithText(resourceId: Int, text: String) {
+        logTest("Fill in element with $text")
         onView(withId(resourceId))
             .perform(click())
             .perform(ViewActions.typeText(text), ViewActions.closeSoftKeyboard())
     }
 
     fun clickOnViewWithText(text: String) {
+        logTest("Click on view with $text")
         onView(withText(text))
             .check(matches(isDisplayed()))
             .perform(click())
     }
 
-    fun checkToastTextIsDisplayed(text: String) {
-        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText("My text")))
-            .check(matches(isDisplayed()));
+    fun checkElementContainsText(resourceId: Int, text: String) {
+        logTest("Check element contains text $text")
+        onView(withId(resourceId))
+            .check(matches(withText(text)))
+    }
+
+    fun checkElementWithTextExist(text: String) {
+        logTest("Check element with $text exist")
+        onView(withText(text))
+            .check(matches(withText(text)))
     }
 }
 

@@ -5,7 +5,6 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
-import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.typeText
 import com.example.android.architecture.blueprints.todoapp.EspressoBaseTest
 import com.example.android.architecture.blueprints.todoapp.R
