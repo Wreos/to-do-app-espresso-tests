@@ -1,5 +1,4 @@
-# Project Name
-Test assigment for Proton
+# Test assigment for Proton
 
 ## Prerequisites
 - Running emulator
@@ -15,6 +14,7 @@ To run the tests, follow these steps:
   npm init playwright@latest
 ```
 OR run tests with run button in IDEA
+
 ![img.png](img.png)
 
 ## Results
@@ -22,13 +22,6 @@ OR run tests with run button in IDEA
 
 ## Test framework architecture
 The tests are written with pure espresso without using of external libraries. Page object patter was implemented using basic Kotlin + Espresso tools
-
-tasks
-├── pageObjects             # Folder with page object files
-├── tests                   # Folder which contains tests
-├── EspressoBaseTest.kt     # Main (base) class for storing commons methods that we are going to use in page objects
-├── TestUtils.kt            # Helper class with common methods
-└── README.md
 
 ## Logging 
 Logs are available in adb logcat output with tag:espresso
