@@ -22,14 +22,15 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.example.android.architecture.blueprints.todoapp.ServiceLocator
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
-import com.example.android.architecture.blueprints.todoapp.pageObjects.TaskDetailPage
-import com.example.android.architecture.blueprints.todoapp.pageObjects.TaskPage
-import com.example.android.architecture.blueprints.todoapp.pageObjects.TodoListPage
+import com.example.android.architecture.blueprints.todoapp.tasks.pageObjects.TaskDetailPage
+import com.example.android.architecture.blueprints.todoapp.tasks.pageObjects.TaskPage
+import com.example.android.architecture.blueprints.todoapp.tasks.pageObjects.TodoListPage
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity
+import com.example.android.architecture.blueprints.todoapp.tasks.registerIdlingResource
+import com.example.android.architecture.blueprints.todoapp.tasks.unregisterIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.*
 import org.junit.After
@@ -50,34 +51,21 @@ class CreateReadUpdateDeleteTests {
 
     @Before
     fun init() {
-        runOnUiThread {
-            ServiceLocator.createDataBase(getApplicationContext(), inMemory = true)
-            repository = ServiceLocator.provideTasksRepository(getApplicationContext())
-            repository.deleteAllTasksBlocking()
-        }
+        ServiceLocator.createDataBase(getApplicationContext(), inMemory = true)
+        repository = ServiceLocator.provideTasksRepository(getApplicationContext())
+        repository.deleteAllTasksBlocking()
+        registerIdlingResource()
     }
 
     @After
     fun reset() {
-        runOnUiThread {
-            ServiceLocator.resetRepository()
-        }
+        ServiceLocator.resetRepository()
+        unregisterIdlingResource()
     }
 
-    @Before
-    fun registerIdlingResource() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
-    }
-
-    @After
-    fun unregisterIdlingResource() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
-    }
 
     @Test
-    fun editTask() {
+    fun testEditTask() {
         repository.saveTaskBlocking(Task(taskTitleOne, taskDescriptionOne))
 
         val activityScenario = ActivityScenario.launch(TasksActivity::class.java)

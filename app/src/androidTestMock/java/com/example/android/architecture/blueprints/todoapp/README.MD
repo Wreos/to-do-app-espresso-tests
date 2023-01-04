@@ -3,16 +3,39 @@ Test assigment for Proton
 
 ## Prerequisites
 - Running emulator
+- Build gradle is finished
+
 ## Running the tests
 To run the tests, follow these steps:
 
-Make sure the prerequisites are installed
-- Open a terminal window and navigate to the project directory
-- Run the command ./gradlew test (or gradlew.bat test on Windows)
-Test coverage
-A summary of the test coverage for the project can be found in the coverage/index.html file. To view the coverage report, open this file in a web browser.
+1) Make sure the prerequisites are installed
+2) Open a terminal window and navigate to the project directory
+3) Run the command 
+```sh
+  npm init playwright@latest
+```
+OR run tests with run button in IDEA
+![img.png](img.png)
+
+## Results
+![img_1.png](img_1.png)
+
+## Test framework architecture
+The tests are written with pure espresso without using of external libraries. Page object patter was implemented using basic Kotlin + Espresso tools
+
+tasks
+├── pageObjects             # Folder with page object files
+├── tests                   # Folder which contains tests
+├── EspressoBaseTest.kt     # Main (base) class for storing commons methods that we are going to use in page objects
+├── TestUtils.kt            # Helper class with common methods
+└── README.md
+
+## Logging 
+Logs are available in adb logcat output with tag:espresso
+![img_2.png](img_2.png)
 
 ## Built with
 JUnit, Espresso
+
 ## Authors
 Aleksandr Lozhkovoi
