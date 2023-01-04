@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.pageObjects
+package com.example.android.architecture.blueprints.todoapp.tasks.pageObjects
 
 import com.example.android.architecture.blueprints.todoapp.EspressoBaseTest
 import com.example.android.architecture.blueprints.todoapp.R

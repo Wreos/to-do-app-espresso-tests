@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.pageObjects
+package com.example.android.architecture.blueprints.todoapp.tasks.pageObjects
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
