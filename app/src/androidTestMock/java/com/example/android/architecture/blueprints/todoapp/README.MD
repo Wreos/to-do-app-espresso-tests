@@ -11,7 +11,8 @@ To run the tests, follow these steps:
 2) Open a terminal window and navigate to the project directory
 3) Run the command 
 ```sh
-  npm init playwright@latest
+adb shell am instrument -w -m -e debug false -e class 'com.example.android.architecture.blueprints.todoapp.tasks.tests.CreateReadUpdateDeleteTests' com.example.android.architecture.blueprints.master.mock.test/androidx.test.runner.AndroidJUnitRunner
+
 ```
 OR run tests with run button in IDEA
 
