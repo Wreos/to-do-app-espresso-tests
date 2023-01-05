@@ -22,7 +22,7 @@ fun <T : Activity> ActivityScenario<T>.getToolbarNavigationContentDescription():
 
 
 fun logTest(log: String) {
-    Log.v("Espresso Test", log);
+    Log.i("Espresso Test", log);
  }
 
 fun registerIdlingResource() {

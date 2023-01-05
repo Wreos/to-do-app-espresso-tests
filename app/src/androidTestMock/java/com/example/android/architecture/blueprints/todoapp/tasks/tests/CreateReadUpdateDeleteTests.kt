@@ -17,7 +17,6 @@ package com.example.android.architecture.blueprints.todoapp.tasks.tests
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -31,7 +30,6 @@ import com.example.android.architecture.blueprints.todoapp.tasks.pageObjects.Tod
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity
 import com.example.android.architecture.blueprints.todoapp.tasks.registerIdlingResource
 import com.example.android.architecture.blueprints.todoapp.tasks.unregisterIdlingResource
-import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.*
 import org.junit.After
 import org.junit.Before
@@ -80,8 +78,8 @@ class CreateReadUpdateDeleteTests {
         editTaskPage.fillTitle(taskTitleTwo)
         editTaskPage.fillDescription(taskDescriptionTwo)
         editTaskPage.clickButton(editTaskPage.saveTaskButton)
-        todoListPage.verifyTodoDisplayed(taskTitleTwo)
-        todoListPage.verifyTodoIsNotDisplayed(taskTitleOne)
+        todoListPage.verifyTaskIsDisplayed(taskTitleTwo)
+        todoListPage.verifyTaskIsNotDisplayed(taskTitleOne)
         activityScenario.close()
     }
 
@@ -97,7 +95,7 @@ class CreateReadUpdateDeleteTests {
         editTaskPage.fillTitle(taskTitleOne)
         editTaskPage.fillDescription(taskDescriptionOne)
         editTaskPage.clickButton(editTaskPage.saveTaskButton)
-        todoListPage.verifyTodoDisplayed(taskTitleOne)
+        todoListPage.verifyTaskIsDisplayed(taskTitleOne)
         activityScenario.close()
     }
 
@@ -115,7 +113,8 @@ class CreateReadUpdateDeleteTests {
         taskDetailPage.clickButton(taskDetailPage.deleteButton)
         todoListPage.clickButton(todoListPage.filterButton)
         todoListPage.clickOnViewWithText("All")
-        todoListPage.verifyTodoIsNotDisplayed(taskTitleOne)
+        todoListPage.verifyTaskIsNotDisplayed(taskTitleOne)
+        todoListPage.verifyTodoListIsEmpty()
         activityScenario.close()
     }
 
